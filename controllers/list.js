@@ -62,7 +62,7 @@ exports.showList = async (req, res, next) => {
 
 }
 
-exports.newItem = async (req, res, next) => {
+exports.addItem = async (req, res, next) => {
   const { id } = req.params;
   const list = await List.findById(id);
   const newItem = new Item(req.body);

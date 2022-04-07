@@ -1,5 +1,8 @@
 const express = require('express');
 const listRoutes = require('./routes/list')
+const itemRoutes = require('./routes/item')
+const categoryRoutes = require('./routes/category')
+const shopRoutes = require('./routes/shop')
 const bodyParser = require('body-parser');
 const app = express();
 const mongoose = require('mongoose');
@@ -25,6 +28,10 @@ app.use((error, req, res, next) => {
 })
 
 app.use('/lists', listRoutes);
+app.use('/items', itemRoutes);
+app.use('/categories', categoryRoutes);
+app.use('/shops', shopRoutes);
 
-
-app.listen(8080);
+app.listen(8080, () => {
+  console.log("pokrenut server")
+})
