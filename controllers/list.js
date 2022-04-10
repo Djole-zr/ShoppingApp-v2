@@ -4,7 +4,13 @@ const List = require('../models/list');
 exports.getLists = async (req, res, next) => {
     await List.find({}).populate('shop')
     .then(list => {
-      res.status(200).json({message: 'Lists found', list: list});
+      if(list.length === 0){
+        const nlError = new Error('No lists yet');
+        nlError.statusCode = 404;
+        next(nlError);
+      } else {
+        res.status(200).json({message: 'Lists found', list: list});
+      }  
     })
     .catch(err => {
       if (!err.statusCode) {
