@@ -4,17 +4,13 @@ const List = require('../models/list');
 exports.getLists = async (req, res, next) => {
     await List.find({}).populate('shop')
     .then(list => {
-      if(!list) {
-        const error = new Error('Could not find list.');
-        error.statusCode = 404;
-        throw error;
-      }
       res.status(200).json({message: 'Lists found', list: list});
     })
     .catch(err => {
       if (!err.statusCode) {
-        err.statusCode = 500;
+        err.statusCode = 404;
       }
+      err.message = 'Could not find lists';
       next(err);
     })
 };
@@ -24,7 +20,7 @@ exports.createList = async (req, res, next) => {
     await newList.save()
     .then(result => {
       res.status(201).json({
-        message: "List created successfully.",
+        message: 'List created successfully.',
         list: result
       })
     })
@@ -40,17 +36,13 @@ exports.showList = async (req, res, next) => {
   const { id } = req.params;
   await List.findById(id).populate('items').populate('shop')
   .then(list => {
-    if(!list) {
-      const error = new Error('Could not find list.');
-      error.statusCode = 404;
-      throw error;
-    }
     res.status(200).json({message: 'List found', list: list});
   })
   .catch(err => {
     if (!err.statusCode) {
-      err.statusCode = 500;
+      err.statusCode = 404;
     }
+    err.message = 'Could not find list.';
     next(err);
   })
 

@@ -4,17 +4,13 @@ exports.showCategory = async (req, res, next) => {
     const { id } = req.params;
     await Category.findById(id)
     .then(category => {
-      if(!category) {
-        const error = new Error('Could not find category.');
-        error.statusCode = 404;
-        throw error;
-      }
       res.status(200).json({message: 'Category found', category: category});
     })
     .catch(err => {
       if (!err.statusCode) {
-        err.statusCode = 500;
+        err.statusCode = 404;
       }
+      err.message = 'Could not find category.';
       next(err);
     })
   

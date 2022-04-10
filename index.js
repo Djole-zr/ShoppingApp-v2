@@ -10,7 +10,7 @@ const mongoose = require('mongoose');
 main().catch(err => console.log(err, 'Mongoose connect error'));
 
 async function main() {
-  await mongoose.connect('mongodb://localhost:27017/shoppingList');
+  await mongoose.connect('mongodb://mongo:27017/shoppingList');
 }
 
 app.use(bodyParser.json());
