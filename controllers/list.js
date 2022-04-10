@@ -1,12 +1,5 @@
-const mongoose = require('mongoose');
-const { List, Item } = require('../models/allModels');
-
-
-main().catch(err => console.log(err, 'ne radi'));
-
-async function main() {
-  await mongoose.connect('mongodb://localhost:27017/shoppingList');
-}
+const Item = require('../models/item');
+const List = require('../models/list');
 
 exports.getLists = async (req, res, next) => {
     await List.find({}).populate('shop')
@@ -16,7 +9,7 @@ exports.getLists = async (req, res, next) => {
         error.statusCode = 404;
         throw error;
       }
-      res.status(200).json({message: 'lists found', list: list});
+      res.status(200).json({message: 'Lists found', list: list});
     })
     .catch(err => {
       if (!err.statusCode) {
@@ -28,7 +21,8 @@ exports.getLists = async (req, res, next) => {
 
 exports.createList = async (req, res, next) => {
     const newList = new List(req.body);
-    await newList.save().then(result => {
+    await newList.save()
+    .then(result => {
       res.status(201).json({
         message: "List created successfully.",
         list: result
@@ -51,7 +45,7 @@ exports.showList = async (req, res, next) => {
       error.statusCode = 404;
       throw error;
     }
-    res.status(200).json({message: 'list found', list: list});
+    res.status(200).json({message: 'List found', list: list});
   })
   .catch(err => {
     if (!err.statusCode) {
@@ -68,7 +62,8 @@ exports.addItem = async (req, res, next) => {
   const newItem = new Item(req.body);
   list.items.push(newItem);
   await list.save();
-  await newItem.save().then(result => {
+  await newItem.save()
+  .then(result => {
     res.status(201).json({
       message: "Item added successfully.",
       item: result

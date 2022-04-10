@@ -1,12 +1,4 @@
-const mongoose = require('mongoose');
-const { Category } = require('../models/allModels');
-
-
-main().catch(err => console.log(err, 'ne radi'));
-
-async function main() {
-  await mongoose.connect('mongodb://localhost:27017/shoppingList');
-}
+const Category = require('../models/category');
 
 exports.showCategory = async (req, res, next) => {
     const { id } = req.params;
@@ -17,7 +9,7 @@ exports.showCategory = async (req, res, next) => {
         error.statusCode = 404;
         throw error;
       }
-      res.status(200).json({message: 'category found', category: category});
+      res.status(200).json({message: 'Category found', category: category});
     })
     .catch(err => {
       if (!err.statusCode) {

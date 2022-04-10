@@ -1,12 +1,4 @@
-const mongoose = require('mongoose');
-const { Item } = require('../models/allModels');
-
-
-main().catch(err => console.log(err, 'ne radi'));
-
-async function main() {
-  await mongoose.connect('mongodb://localhost:27017/shoppingList');
-}
+const Item = require('../models/item');
 
 exports.showItem = async (req, res, next) => {
     const { id } = req.params;
@@ -32,7 +24,7 @@ exports.showItem = async (req, res, next) => {
     const { id } = req.params;
     const item = await Item.findByIdAndUpdate(id, req.body, { runValidators: true});
     item.save().then(result => {
-        res.status(201).json({
+        res.status(200).json({
           message: "Item updated successfully.",
           item: result
         })
@@ -49,7 +41,7 @@ exports.showItem = async (req, res, next) => {
   exports.deleteItem = async (req, res, next) => {
     const { id } = req.params;
     await Item.findByIdAndDelete(id).then(result => {
-        res.status(201).json({
+        res.status(200).json({
           message: "Item deleted successfully.",
           item: result
         })

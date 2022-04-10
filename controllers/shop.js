@@ -1,12 +1,5 @@
-const mongoose = require('mongoose');
-const { Shop } = require('../models/allModels');
+const Shop = require('../models/shop');
 
-
-main().catch(err => console.log(err, 'ne radi'));
-
-async function main() {
-  await mongoose.connect('mongodb://localhost:27017/shoppingList');
-}
 
 exports.showShop = async (req, res, next) => {
     const { id } = req.params;
@@ -17,7 +10,7 @@ exports.showShop = async (req, res, next) => {
         error.statusCode = 404;
         throw error;
       }
-      res.status(200).json({message: 'shop found', shop: shop});
+      res.status(200).json({message: 'Shop found', shop: shop});
     })
     .catch(err => {
       if (!err.statusCode) {

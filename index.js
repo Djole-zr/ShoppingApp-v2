@@ -7,7 +7,7 @@ const bodyParser = require('body-parser');
 const app = express();
 const mongoose = require('mongoose');
 
-main().catch(err => console.log(err, 'ne radi'));
+main().catch(err => console.log(err, 'Mongoose connect error'));
 
 async function main() {
   await mongoose.connect('mongodb://localhost:27017/shoppingList');
@@ -20,18 +20,19 @@ app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   next();
 });
-app.use((error, req, res, next) => {
-  console.log(error);
-  const status = error.statusCode;
-  const message = error.message;
-  res.status(status).json({message: message});
-})
+
 
 app.use('/lists', listRoutes);
 app.use('/items', itemRoutes);
 app.use('/categories', categoryRoutes);
 app.use('/shops', shopRoutes);
 
+app.use((error, req, res, next) => {
+  const { statusCode = 500, message = 'Something went wrong.'} = error;
+  res.status(statusCode).json({message: message, status: statusCode});
+});
+
+
 app.listen(8080, () => {
-  console.log("pokrenut server")
+  console.log("App is running")
 })

@@ -11,7 +11,7 @@ router.post('/', listController.createList);
 
 router.get('/:id', listController.showList);
 
-router.post('/:id/items/new', listController.addItem);
+router.post('/:id', listController.addItem);
 
 module.exports = router;
 
