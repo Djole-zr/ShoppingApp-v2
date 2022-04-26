@@ -1,5 +1,24 @@
 const Shop = require('../models/shop');
 
+exports.getShops = async (req, res, next) => {
+  await Shop.find({})
+  .then(shop => {
+    if(shop.length === 0){
+      const nsError = new Error('No shops yet');
+      nsError.statusCode = 404;
+      next(nsError);
+    } else {
+      res.status(200).json({message: 'Shops found', shop: shop});
+    }  
+  })
+  .catch(err => {
+    if (!err.statusCode) {
+      err.statusCode = 404;
+    }
+    err.message = 'Could not find shops';
+    next(err);
+  })
+};
 
 exports.showShop = async (req, res, next) => {
     const { id } = req.params;

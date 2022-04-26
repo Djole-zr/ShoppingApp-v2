@@ -4,7 +4,7 @@ const shopController = require('../controllers/shop')
 
 const router = express.Router();
 
-
+router.get('/', shopController.getShops);
 router.get('/:id', shopController.showShop);
 router.post('/', shopController.addShop);
 

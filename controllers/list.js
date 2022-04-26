@@ -40,7 +40,17 @@ exports.createList = async (req, res, next) => {
 
 exports.showList = async (req, res, next) => {
   const { id } = req.params;
-  await List.findById(id).populate('items').populate('shop')
+  await List.findById(id).populate('shop').populate([{
+    path: "items",
+    model: "Item",
+    select: "name quantity created category",
+    populate: {
+      path: "category",
+      model: "Category",
+      select: "name description"
+    }
+  }
+  ])
   .then(list => {
     res.status(200).json({message: 'List found', list: list});
   })
